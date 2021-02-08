@@ -30,5 +30,12 @@ public class CategoryService {
 		
 		return categoriesDto;
 	}
+
+	@Transactional(readOnly = true)
+	public CategoryDTO findById(long id) {
+		
+		Category category = this.repository.findById(id).get();
+		return new CategoryDTO(category);
+	}
 	
 }
