@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thiago.dscatalog.dto.CategoryDTO;
 import com.thiago.dscatalog.entities.Category;
 import com.thiago.dscatalog.repositories.CategoryRepository;
+import com.thiago.dscatalog.services.exception.ElementNotFoundException;
 
 @Service
 public class CategoryService {
@@ -32,10 +33,26 @@ public class CategoryService {
 	}
 
 	@Transactional(readOnly = true)
-	public CategoryDTO findById(long id) {
+	public CategoryDTO findById(long id) throws ElementNotFoundException {
 		
-		Category category = this.repository.findById(id).get();
+		Category category = this.repository.findById(id)
+				.orElseThrow(() -> new ElementNotFoundException("Elemento não econtrado."));
+		
 		return new CategoryDTO(category);
+		
+	}
+
+	@Transactional
+	public CategoryDTO insert(CategoryDTO categoryDto) {
+		
+		// Validações??? 
+		
+		Category cat = new Category();
+		cat.setName(categoryDto.getName());
+		cat = this.repository.save(cat);
+		categoryDto.setId(cat.getId());
+		return categoryDto;	
+		
 	}
 	
 }
