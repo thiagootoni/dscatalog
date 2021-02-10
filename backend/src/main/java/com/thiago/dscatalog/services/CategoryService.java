@@ -3,13 +3,18 @@ package com.thiago.dscatalog.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thiago.dscatalog.dto.CategoryDTO;
 import com.thiago.dscatalog.entities.Category;
 import com.thiago.dscatalog.repositories.CategoryRepository;
+import com.thiago.dscatalog.services.exception.DataBaseException;
 import com.thiago.dscatalog.services.exception.ElementNotFoundException;
 
 @Service
@@ -53,6 +58,35 @@ public class CategoryService {
 		categoryDto.setId(cat.getId());
 		return categoryDto;	
 		
+	}
+
+	@Transactional
+	public CategoryDTO update(CategoryDTO categoryDto, long id) throws ElementNotFoundException {
+		
+		try {
+			
+			Category category = this.repository.getOne(id);			
+			category.setName(categoryDto.getName());
+			
+			this.repository.save(category);
+			
+			return new CategoryDTO(category);
+			
+		} catch (EntityNotFoundException e) {
+			throw new ElementNotFoundException("Elemento não existente.");
+		}
+	}
+
+	
+	public void delete(long id) throws ElementNotFoundException {
+		
+		try {
+			this.repository.deleteById(id);			
+		} catch (EmptyResultDataAccessException e) {
+			throw new ElementNotFoundException("Elemento não existente.");
+		} catch (DataIntegrityViolationException e) {
+			throw new DataBaseException("Elemento não existente.");
+		}
 	}
 	
 }
