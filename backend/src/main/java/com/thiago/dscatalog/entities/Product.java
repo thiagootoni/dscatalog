@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.thiago.dscatalog.dto.ProductDTO;
+
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable{
@@ -54,6 +56,18 @@ public class Product implements Serializable{
 		this.categories = categories;
 	}
 
+	public Product(ProductDTO productDto) {
+		
+		this.id = productDto.getId();
+		this.name = productDto.getName();
+		this.description = productDto.getDescription();
+		this.price = productDto.getPrice();
+		this.imgUrl = productDto.getImgUrl();
+		this.date = productDto.getDate();
+		
+		productDto.getCategories().forEach(x -> categories.add(new Category(x)));
+		
+	}
 
 
 	public Long getId() {

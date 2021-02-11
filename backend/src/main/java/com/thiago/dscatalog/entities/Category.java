@@ -12,6 +12,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.thiago.dscatalog.dto.CategoryDTO;
+
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable{	
@@ -38,6 +40,11 @@ public class Category implements Serializable{
 		super();
 		this.id = id;
 		this.name = name;
+	}
+	
+	public Category(CategoryDTO dto) {
+		this.id = dto.getId();
+		this.name = dto.getName();
 	}
 
 
