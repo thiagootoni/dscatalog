@@ -8,6 +8,8 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,18 @@ public class CategoryService {
 		
 		return categoriesDto;
 	}
+	
+	@Transactional(readOnly = true)
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
+		
+		Page<Category> pages = this.repository.findAll(pageRequest);
+		
+		Page<CategoryDTO> pagesDto = pages.map(x -> new CategoryDTO(x));
+		
+		return pagesDto;
+		
+	}
+	
 
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(long id) throws ElementNotFoundException {
@@ -88,5 +102,7 @@ public class CategoryService {
 			throw new DataBaseException("Elemento não existente.");
 		}
 	}
+
+	
 	
 }
