@@ -2,6 +2,7 @@ package com.thiago.dscatalog.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -38,7 +39,7 @@ public class Product implements Serializable{
 	@JoinTable(name = "tb_product_category",
 	joinColumns = @JoinColumn(name = "product_id"),
 	inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private Set<Category> categories;
+	private Set<Category> categories = new HashSet<>();
 	
 	public Product() {
 		
@@ -65,7 +66,7 @@ public class Product implements Serializable{
 		this.imgUrl = productDto.getImgUrl();
 		this.date = productDto.getDate();
 		
-		productDto.getCategories().forEach(x -> categories.add(new Category(x)));
+		productDto.getCategories().forEach(x -> this.categories.add(new Category(x)));
 		
 	}
 

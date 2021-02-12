@@ -13,8 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thiago.dscatalog.dto.CategoryDTO;
 import com.thiago.dscatalog.dto.ProductDTO;
+import com.thiago.dscatalog.entities.Category;
 import com.thiago.dscatalog.entities.Product;
+import com.thiago.dscatalog.repositories.CategoryRepository;
 import com.thiago.dscatalog.repositories.ProductRepository;
 import com.thiago.dscatalog.services.exception.DataBaseException;
 import com.thiago.dscatalog.services.exception.ElementNotFoundException;
@@ -24,6 +27,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository repository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	public ProductService() {
 		
@@ -68,7 +74,7 @@ public class ProductService {
 		
 		Product product = new Product(productDto);
 		this.repository.save(product);
-		product.setId(product.getId());
+		productDto.setId(product.getId());
 		return productDto;
 	}
 
@@ -105,6 +111,23 @@ public class ProductService {
 		}
 	}
 
-	
+	public void dtoToEntity(Product product, ProductDTO productDto) {
+		
+		product.setId(productDto.getId());
+		product.setName(productDto.getName());
+		product.setDescription(productDto.getDescription());
+		product.setPrice(productDto.getPrice());
+		product.setImgUrl(productDto.getImgUrl());
+		product.setDate(productDto.getDate());
+		
+		product.getCategories().clear();
+		
+		for (CategoryDTO catDto : productDto.getCategories()) {
+			
+			Category category = this.categoryRepository.getOne(catDto.getId());
+			product.getCategories().add(category);
+		}
+		
+	}
 	
 }
