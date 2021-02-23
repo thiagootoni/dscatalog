@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,7 +32,7 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(DataBaseException.class)
-	public ResponseEntity<StandardError> dataBaseHandler(ElementNotFoundException e, HttpServletRequest request){
+	public ResponseEntity<StandardError> dataBaseHandler(DataBaseException e, HttpServletRequest request){
 		
 		StandardError error = new StandardError();
 		HttpStatus status = HttpStatus.BAD_REQUEST;
