@@ -1,6 +1,6 @@
 package com.thiago.dscatalog.services.exception;
 
-public class ElementNotFoundException extends Exception {
+public class ElementNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public ElementNotFoundException(String message) {

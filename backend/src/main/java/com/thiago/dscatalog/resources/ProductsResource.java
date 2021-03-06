@@ -2,6 +2,8 @@ package com.thiago.dscatalog.resources;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,7 +66,7 @@ public class ProductsResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO productDto){
+	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDto){
 		
 		this.service.insert(productDto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productDto.getId()).toUri();		
@@ -72,7 +74,7 @@ public class ProductsResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO productDto, @PathVariable long id) throws ElementNotFoundException{
+	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDto, @PathVariable long id) throws ElementNotFoundException{
 		
 		productDto = this.service.update(productDto, id);
 		return ResponseEntity.ok().body(productDto);

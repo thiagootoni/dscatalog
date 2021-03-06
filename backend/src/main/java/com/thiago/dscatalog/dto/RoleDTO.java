@@ -1,39 +1,27 @@
-package com.thiago.dscatalog.entities;
+package com.thiago.dscatalog.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.thiago.dscatalog.entities.Role;
 
-import com.thiago.dscatalog.dto.RoleDTO;
-
-@Entity
-@Table(name = "tb_role")
-public class Role implements Serializable{
+public class RoleDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Long id;
 	private String authority;
-	
-		
-	public Role() {
-		super();
+
+	public RoleDTO() {
 	}
 
-	public Role(Long id, String authority) {
+	public RoleDTO(Role role) {
+		this.id = role.getId();
+		this.authority = role.getAuthority();
+	}
+
+	public RoleDTO(Long id, String authority) {
 		super();
 		this.id = id;
 		this.authority = authority;
-	}
-	
-	public Role(RoleDTO dto) {
-		this.id = dto.getId();
-		this.authority = dto.getAuthority();
 	}
 
 	public Long getId() {
@@ -68,7 +56,7 @@ public class Role implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Role other = (Role) obj;
+		RoleDTO other = (RoleDTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -76,6 +64,5 @@ public class Role implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
+
 }

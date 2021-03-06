@@ -4,9 +4,9 @@ import java.time.Instant;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -20,6 +20,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> elementNotFoundHandler(ElementNotFoundException e, HttpServletRequest request){
 		
 		StandardError error = new StandardError();
+		HttpStatus status = HttpStatus.NOT_FOUND;
 		
 		error.setTimestamp(Instant.now());
 		error.setStatus(HttpStatus.NOT_FOUND.value());
@@ -27,7 +28,7 @@ public class ResourceExceptionHandler {
 		error.setMessage(e.getMessage());
 		error.setPath(request.getRequestURI());
 		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		return ResponseEntity.status(status).body(error);
 		
 	}
 	
@@ -43,7 +44,25 @@ public class ResourceExceptionHandler {
 		error.setMessage(e.getMessage());
 		error.setPath(request.getRequestURI());
 		
-		return ResponseEntity.status(status.BAD_REQUEST).body(error);
+		return ResponseEntity.status(status).body(error);
+		
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<StandardError> dataBaseHandler(MethodArgumentNotValidException e, HttpServletRequest request){
+		
+		ValidationError error = new ValidationError();
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		
+		error.setTimestamp(Instant.now());
+		error.setStatus(status.value());
+		error.setError("Validation exception");
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		
+		error.fillErrors(e.getBindingResult().getFieldErrors());
+		
+		return ResponseEntity.status(status).body(error);
 		
 	}
 
