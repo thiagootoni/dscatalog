@@ -11,9 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thiago.dscatalog.dto.UserInsertDTO;
 import com.thiago.dscatalog.dto.RoleDTO;
 import com.thiago.dscatalog.dto.UserDTO;
+import com.thiago.dscatalog.dto.UserInsertDTO;
+import com.thiago.dscatalog.dto.UserUpdateDTO;
 import com.thiago.dscatalog.entities.Role;
 import com.thiago.dscatalog.entities.User;
 import com.thiago.dscatalog.repositories.RoleRepository;
@@ -93,6 +94,35 @@ public class UserService {
 			Role role = this.roleRepository.getOne(x.getId());
 			user.getRoles().add(role);
 		});
+		
+	}
+
+	@Transactional
+	public UserDTO updateOne(UserUpdateDTO userUpdateDto, Long id) {
+		
+		User user = this.repo.findById(id)
+				.orElseThrow(() -> new ElementNotFoundException("Elemento não encontrado."));
+		
+		dtoToEntity(userUpdateDto, user);
+		user.setPassword(passwordEnconder.encode(userUpdateDto.getPassord()));
+		
+		user = this.repo.save(user);
+		
+		return new UserDTO(user);
+		
+	}
+
+	private void dtoToEntity(UserDTO userDto, User user) {
+		
+		user.setEmail(userDto.getEmail());
+		user.setFirstName(userDto.getFirstName());
+		user.setLastName(userDto.getLastName());
+		
+		user.getRoles().clear();
+		for (RoleDTO r : userDto.getRoles()) {
+			Role role = this.roleRepository.getOne(r.getId());
+			user.getRoles().add(role);
+		}
 		
 	}
 	

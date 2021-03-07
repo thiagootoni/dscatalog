@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.thiago.dscatalog.dto.UserInsertDTO;
 import com.thiago.dscatalog.dto.UserDTO;
+import com.thiago.dscatalog.dto.UserInsertDTO;
+import com.thiago.dscatalog.dto.UserUpdateDTO;
 import com.thiago.dscatalog.services.UserService;
 
 @RestController
@@ -68,17 +69,16 @@ public class UserResource{
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> updateOne(@Valid @RequestBody UserDTO obj, Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<UserDTO> updateOne(@Valid @RequestBody UserUpdateDTO userUpdateDto, @PathVariable Long id) {
+		
+		UserDTO userDto = this.service.updateOne(userUpdateDto, id);
+		
+		return ResponseEntity.ok(userDto);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> deleteOne(@PathVariable Long id) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	
-	
+	}	
 }
