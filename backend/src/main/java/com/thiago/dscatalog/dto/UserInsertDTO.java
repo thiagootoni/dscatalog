@@ -3,22 +3,22 @@ package com.thiago.dscatalog.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.thiago.dscatalog.services.validations.NewUserValid;
+import com.thiago.dscatalog.services.validations.UserInsertValid;
 
-@NewUserValid
-public class NewUserDTO extends UserDTO{
+@UserInsertValid
+public class UserInsertDTO extends UserDTO{
 	private static final long serialVersionUID = 1L;
 	
 	@NotBlank
 	@Size(min = 3, message = "Mínimo de 3 caractéres")
 	private String password;
 
-	public NewUserDTO(String password) {
+	public UserInsertDTO(String password) {
 		super();
 		this.password = password;
 	}
 
-	public NewUserDTO() {
+	public UserInsertDTO() {
 		super();
 	}
 

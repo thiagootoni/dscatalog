@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.thiago.dscatalog.dto.NewUserDTO;
+import com.thiago.dscatalog.dto.UserInsertDTO;
 import com.thiago.dscatalog.dto.UserDTO;
 import com.thiago.dscatalog.services.UserService;
 
@@ -58,7 +58,7 @@ public class UserResource{
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> insertOne(@Valid @RequestBody NewUserDTO newUserDto) {
+	public ResponseEntity<UserDTO> insertOne(@Valid @RequestBody UserInsertDTO newUserDto) {
 		
 		UserDTO userDTO = this.service.insert(newUserDto);
 		

@@ -2,29 +2,28 @@ package com.thiago.dscatalog.services.validations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.thiago.dscatalog.dto.NewUserDTO;
+import com.thiago.dscatalog.dto.UserInsertDTO;
 import com.thiago.dscatalog.entities.User;
 import com.thiago.dscatalog.repositories.UserRepository;
 import com.thiago.dscatalog.resources.exceptions.FieldMessage;
 
-public class NewUserValidator implements ConstraintValidator<NewUserValid, NewUserDTO> {
+public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserInsertDTO> {
 	
 	@Autowired
 	UserRepository userRepository;
 	
 	@Override
-	public void initialize(NewUserValid ann) {
+	public void initialize(UserInsertValid ann) {
 	}
 
 	@Override
-	public boolean isValid(NewUserDTO dto, ConstraintValidatorContext context) {
+	public boolean isValid(UserInsertDTO dto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
 		
