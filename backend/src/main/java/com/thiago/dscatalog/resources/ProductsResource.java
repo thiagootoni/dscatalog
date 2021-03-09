@@ -30,63 +30,65 @@ public class ProductsResource {
 
 	@Autowired
 	private ProductService service;
-		
+
 	public ProductsResource() {
-		
+
 	}
 
-	/*@GetMapping
-	public ResponseEntity<List<ProductDTO>> findAll(){
-		
-		List<ProductDTO> allCategories = this.service.findAll();		
-		return ResponseEntity.ok().body(allCategories);
-		
-	}*/
-	
+	/*
+	 * @GetMapping public ResponseEntity<List<ProductDTO>> findAll(){
+	 * 
+	 * List<ProductDTO> allCategories = this.service.findAll(); return
+	 * ResponseEntity.ok().body(allCategories);
+	 * 
+	 * }
+	 */
+
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> findAllPaginate(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction
-			){
-		
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		
+
 		Page<ProductDTO> pages = this.service.findAllPaged(pageRequest);
 		return ResponseEntity.ok(pages);
-		
+
 	}
-	
+
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> findById(@PathVariable long id) throws ElementNotFoundException{
-		
+	public ResponseEntity<ProductDTO> findById(@PathVariable long id) throws ElementNotFoundException {
+
 		ProductDTO productDto = this.service.findById(id);
 		return ResponseEntity.ok(productDto);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDto){
-		
+	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDto) {
+
 		this.service.insert(productDto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productDto.getId()).toUri();		
-		return ResponseEntity.created(uri).body(productDto);		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productDto.getId())
+				.toUri();
+		return ResponseEntity.created(uri).body(productDto);
 	}
-	
+
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDto, @PathVariable long id) throws ElementNotFoundException{
-		
+	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDto, @PathVariable long id)
+			throws ElementNotFoundException {
+
 		productDto = this.service.update(productDto, id);
 		return ResponseEntity.ok().body(productDto);
-		
+
 	}
-	
-	@DeleteMapping(value ="/{id}")
-	public ResponseEntity<ProductDTO> delete(@PathVariable long id) throws ElementNotFoundException{
-		
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<ProductDTO> delete(@PathVariable long id) throws ElementNotFoundException {
+
 		this.service.delete(id);
 		return ResponseEntity.noContent().build();
-		
+
 	}
-	
+
 }

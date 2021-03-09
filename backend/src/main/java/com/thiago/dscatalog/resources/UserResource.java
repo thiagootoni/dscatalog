@@ -78,7 +78,8 @@ public class UserResource{
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> deleteOne(@PathVariable Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		this.service.delete(id);
+		return ResponseEntity.noContent().build();
 	}	
 }

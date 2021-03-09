@@ -103,7 +103,7 @@ public class ProductService {
 	public void delete(long id) throws ElementNotFoundException {
 		
 		try {
-			this.repository.deleteById(id);			
+			this.repository.deleteById(id);		
 		} catch (EmptyResultDataAccessException e) {
 			throw new ElementNotFoundException("Elemento não existente.");
 		} catch (DataIntegrityViolationException e) {
