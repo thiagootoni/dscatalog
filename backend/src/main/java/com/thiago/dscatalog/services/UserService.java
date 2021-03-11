@@ -1,14 +1,20 @@
 package com.thiago.dscatalog.services;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +31,10 @@ import com.thiago.dscatalog.services.exception.DataBaseException;
 import com.thiago.dscatalog.services.exception.ElementNotFoundException;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
 
+	//private static Logger logger = org.slf4j.LoggerFactory.getLogger(UserService.class);
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEnconder;
 
@@ -139,6 +147,19 @@ public class UserService {
 			user.getRoles().add(role);
 		}
 
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = this.repo.findByEmail(username);
+		
+		if (user == null) {
+			//logger.error("User not found:" + username);
+			throw new UsernameNotFoundException("Email not found");
+		}
+		
+		//logger.error("User found:" + username);
+		return user;
 	}
 
 }
