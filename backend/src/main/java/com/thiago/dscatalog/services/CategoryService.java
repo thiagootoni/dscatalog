@@ -99,7 +99,7 @@ public class CategoryService {
 		} catch (EmptyResultDataAccessException e) {
 			throw new ElementNotFoundException("Elemento não existente.");
 		} catch (DataIntegrityViolationException e) {
-			throw new DataBaseException("Elemento não existente.");
+			throw new DataBaseException("Integridade de banco de dados violada");
 		}
 	}
 
