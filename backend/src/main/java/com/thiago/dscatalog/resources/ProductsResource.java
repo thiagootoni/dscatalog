@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.thiago.dscatalog.dto.ProductDTO;
+import com.thiago.dscatalog.dto.UriDTO;
 import com.thiago.dscatalog.services.ProductService;
 import com.thiago.dscatalog.services.exception.ElementNotFoundException;
 
@@ -46,6 +48,8 @@ public class ProductsResource {
 
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> findAllPaginate(
+			@RequestParam(value = "name", defaultValue = "") String name,
+			@RequestParam(value = "idCategory", defaultValue = "0") Long idCategory,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
@@ -53,7 +57,7 @@ public class ProductsResource {
 
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-		Page<ProductDTO> pages = this.service.findAllPaged(pageRequest);
+		Page<ProductDTO> pages = this.service.findAllPaged(pageRequest, name, idCategory);
 		return ResponseEntity.ok(pages);
 
 	}
@@ -72,6 +76,13 @@ public class ProductsResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productDto.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(productDto);
+	}
+	
+	@PostMapping(value = "/image")
+	public ResponseEntity<UriDTO> uploadImage(@RequestParam("file") MultipartFile file){
+		
+		UriDTO uri = service.uploadFile(file);
+		return ResponseEntity.ok(uri);
 	}
 
 	@PutMapping(value = "/{id}")

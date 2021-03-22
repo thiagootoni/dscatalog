@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.thiago.dscatalog.services.exception.DataBaseException;
 import com.thiago.dscatalog.services.exception.ElementNotFoundException;
 
@@ -65,5 +67,55 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(status).body(error);
 		
 	}
+	
+	@ExceptionHandler(AmazonServiceException.class)
+	public ResponseEntity<StandardError> amazonService(ElementNotFoundException e, HttpServletRequest request){
+		
+		StandardError error = new StandardError();
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		error.setTimestamp(Instant.now());
+		error.setStatus(HttpStatus.NOT_FOUND.value());
+		error.setError("AWS Exception");
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(error);
+		
+	}
+	
+	@ExceptionHandler(AmazonClientException.class)
+	public ResponseEntity<StandardError> amazonClient(ElementNotFoundException e, HttpServletRequest request){
+		
+		StandardError error = new StandardError();
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		error.setTimestamp(Instant.now());
+		error.setStatus(HttpStatus.NOT_FOUND.value());
+		error.setError("AWS Exception");
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(error);
+		
+	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<StandardError> illegalArgument(ElementNotFoundException e, HttpServletRequest request){
+		
+		StandardError error = new StandardError();
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		error.setTimestamp(Instant.now());
+		error.setStatus(HttpStatus.NOT_FOUND.value());
+		error.setError("Illegal Argument");
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(error);
+		
+	}
+	
+	
 
 }

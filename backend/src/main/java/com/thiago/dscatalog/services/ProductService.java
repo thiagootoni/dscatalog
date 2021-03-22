@@ -1,5 +1,7 @@
 package com.thiago.dscatalog.services;
 
+import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,9 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.thiago.dscatalog.dto.CategoryDTO;
 import com.thiago.dscatalog.dto.ProductDTO;
+import com.thiago.dscatalog.dto.UriDTO;
 import com.thiago.dscatalog.entities.Category;
 import com.thiago.dscatalog.entities.Product;
 import com.thiago.dscatalog.repositories.CategoryRepository;
@@ -30,6 +34,9 @@ public class ProductService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private S3Service s3Service;
 
 	public ProductService() {
 		
@@ -46,9 +53,11 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
+	public Page<ProductDTO> findAllPaged(PageRequest pageRequest, String name, Long idCategory) {
 		
-		Page<Product> pages = this.repository.findAll(pageRequest);
+		
+		List<Category> categories = (idCategory == 0) ? null : Arrays.asList(categoryRepository.getOne(idCategory));
+		Page<Product> pages = this.repository.findAllPaginated(name.trim(), categories, pageRequest);
 		
 		Page<ProductDTO> pagesDto = pages.map(x -> new ProductDTO(x));
 		
@@ -127,6 +136,14 @@ public class ProductService {
 			Category category = this.categoryRepository.getOne(catDto.getId());
 			product.getCategories().add(category);
 		}
+		
+	}
+
+	public UriDTO uploadFile(MultipartFile file) {
+
+		URL url = this.s3Service.uploadFile(file);
+		
+		return new UriDTO(url.toString());
 		
 	}
 	
