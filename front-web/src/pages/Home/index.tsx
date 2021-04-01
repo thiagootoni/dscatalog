@@ -5,7 +5,7 @@ import ButtonIcon from '../../core/components/ButtonIcon';
 import './style.scss';
 
 const Home = () => (
-    <div className="row home-container">
+    <div className="row home-container card-base bd-radius-20">
 
         <div className="col-6">
             <h1 className="text-title">
