@@ -1,0 +1,25 @@
+.product-price-container{
+    display: flex;
+    font-weight: bold;
+    
+}
+
+.product-price{
+    font-size: 32px;
+    line-height: 44px;
+    letter-spacing: -0.015em;
+    color: #407BFF;
+}
+
+.product-currency{
+    font-size: 18px;
+    line-height: 25px;
+    letter-spacing: -0.015em;
+    color: #9E9E9E;
+    font-weight: normal;
+    margin-right: 5px;
+}
+
+.product-details-info-container .product-price{
+    font-size: 48px;
+}
