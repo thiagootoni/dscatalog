@@ -78,12 +78,12 @@ public class ProductsResource {
 		return ResponseEntity.created(uri).body(productDto);
 	}
 	
-	@PostMapping(value = "/image")
+	/*@PostMapping(value = "/image")
 	public ResponseEntity<UriDTO> uploadImage(@RequestParam("file") MultipartFile file){
 		
 		UriDTO uri = service.uploadFile(file);
 		return ResponseEntity.ok(uri);
-	}
+	}*/
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDto, @PathVariable long id)

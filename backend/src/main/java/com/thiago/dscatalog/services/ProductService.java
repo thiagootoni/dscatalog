@@ -35,8 +35,8 @@ public class ProductService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	@Autowired
-	private S3Service s3Service;
+	/*@Autowired
+	private S3Service s3Service;*/
 
 	public ProductService() {
 		
@@ -139,12 +139,12 @@ public class ProductService {
 		
 	}
 
-	public UriDTO uploadFile(MultipartFile file) {
+	/*public UriDTO uploadFile(MultipartFile file) {
 
 		URL url = this.s3Service.uploadFile(file);
 		
 		return new UriDTO(url.toString());
 		
-	}
+	}*/
 	
 }

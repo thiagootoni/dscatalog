@@ -1,16 +1,23 @@
 import React from 'react';
 import "./styles.scss";
 
-type props = {
-
-    price: string;
+type Props = {
+    price: number;
 }
 
-const ProductPrice = ({price} : props) => (
+const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(price);
+}
+
+const ProductPrice = ({price} : Props) => (
 
     <div className="product-price-container">
-        <span className="product-currency">R$</span>
-        <h3 className="product-price">{price}</h3>
+        <span className="product-currency">
+            R$
+        </span>
+        <h3 className="product-price">
+            {formatPrice(price)}
+        </h3>
     </div>
 );
 

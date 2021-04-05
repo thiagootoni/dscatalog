@@ -19,7 +19,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 @Service
 public class S3Service {
 
-	private static Logger LOG = LoggerFactory.getLogger(S3Service.class);
+	/*private static Logger LOG = LoggerFactory.getLogger(S3Service.class);
 
 	@Autowired
 	private AmazonS3 s3client;
@@ -53,5 +53,5 @@ public class S3Service {
 		LOG.info("upload end");
 		
 		return s3client.getUrl(bucketName, standartName);
-	}
+	}*/
 }
