@@ -1,6 +1,5 @@
 package com.thiago.dscatalog.services;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,11 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.thiago.dscatalog.dto.CategoryDTO;
 import com.thiago.dscatalog.dto.ProductDTO;
-import com.thiago.dscatalog.dto.UriDTO;
 import com.thiago.dscatalog.entities.Category;
 import com.thiago.dscatalog.entities.Product;
 import com.thiago.dscatalog.repositories.CategoryRepository;
