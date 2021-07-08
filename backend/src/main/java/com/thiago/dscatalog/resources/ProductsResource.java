@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.thiago.dscatalog.dto.ProductDTO;
-import com.thiago.dscatalog.dto.UriDTO;
 import com.thiago.dscatalog.services.ProductService;
 import com.thiago.dscatalog.services.exception.ElementNotFoundException;
 
@@ -63,7 +61,7 @@ public class ProductsResource {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> findById(@PathVariable long id) throws ElementNotFoundException {
+	public ResponseEntity<ProductDTO> findById(@PathVariable long id) {
 
 		ProductDTO productDto = this.service.findById(id);
 		return ResponseEntity.ok(productDto);
@@ -77,17 +75,16 @@ public class ProductsResource {
 				.toUri();
 		return ResponseEntity.created(uri).body(productDto);
 	}
-	
-	/*@PostMapping(value = "/image")
-	public ResponseEntity<UriDTO> uploadImage(@RequestParam("file") MultipartFile file){
-		
-		UriDTO uri = service.uploadFile(file);
-		return ResponseEntity.ok(uri);
-	}*/
+
+	/*
+	 * @PostMapping(value = "/image") public ResponseEntity<UriDTO>
+	 * uploadImage(@RequestParam("file") MultipartFile file){
+	 * 
+	 * UriDTO uri = service.uploadFile(file); return ResponseEntity.ok(uri); }
+	 */
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDto, @PathVariable long id)
-			throws ElementNotFoundException {
+	public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDto, @PathVariable long id) {
 
 		productDto = this.service.update(productDto, id);
 		return ResponseEntity.ok().body(productDto);

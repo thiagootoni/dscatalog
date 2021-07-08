@@ -54,9 +54,12 @@ public class ProductService {
 		
 		
 		List<Category> categories = (idCategory == 0) ? null : Arrays.asList(categoryRepository.getOne(idCategory));
-		Page<Product> pages = this.repository.findAllPaginated(name.trim(), categories, pageRequest);
 		
-		Page<ProductDTO> pagesDto = pages.map(x -> new ProductDTO(x));
+		Page<Product> pages = this.repository.findAllPaginated(name.trim(), categories, pageRequest);
+		this.repository.findProductsWithCategories(pages.getContent());		
+		
+		Page<ProductDTO> pagesDto = pages.map(x -> new ProductDTO(x, x.getCategories()));
+		
 		
 		return pagesDto;
 		

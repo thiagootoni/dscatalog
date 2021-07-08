@@ -101,7 +101,7 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<StandardError> illegalArgument(ElementNotFoundException e, HttpServletRequest request){
+	public ResponseEntity<StandardError> illegalArgument(IllegalArgumentException e, HttpServletRequest request){
 		
 		StandardError error = new StandardError();
 		HttpStatus status = HttpStatus.BAD_REQUEST;

@@ -2,10 +2,13 @@ package com.thiago.dscatalog.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,12 +70,40 @@ class ProductServiceTest {
 		Mockito.when(this.repository.save(ArgumentMatchers.any())).thenReturn(product);
 		Mockito.when(this.repository.findById(existingId)).thenReturn(Optional.of(product));
 		Mockito.when(this.repository.findById(nonExistingId)).thenReturn(Optional.empty());
+		Mockito.when(this.repository.getOne(existingId)).thenReturn(product);
+		Mockito.when(this.repository.getOne(nonExistingId)).thenThrow(new EntityNotFoundException());
 		Mockito.when(categoryRepository.getOne(ArgumentMatchers.anyLong())).thenReturn(category);
 		
 		Mockito.doNothing().when(this.repository).deleteById(existingId);
 		Mockito.doThrow(EmptyResultDataAccessException.class).when(this.repository).deleteById(nonExistingId);
 		Mockito.doThrow(DataIntegrityViolationException.class).when(this.repository).deleteById(dependentId);
 		
+	}
+	
+	@Test
+	void updateShouldByReturnElementNotFoundExceptionWhenIdNotExists() {
+		assertThrows(ElementNotFoundException.class, ()-> {
+			this.service.update(ProductFactory.createProductDTO(), nonExistingId);
+		});
+	}
+	
+	@Test
+	void updateIdShouldByReturnProductDtoWhenIdExists() {
+		ProductDTO productDto = this.service.update(ProductFactory.createProductDTO(), existingId);
+		assertEquals(productDto.getClass().getName(), ProductDTO.class.getName());
+	}
+	
+	@Test
+	void findByIdShouldByReturnProductDtoWhenIdExists() {
+		ProductDTO productDto = this.service.findById(existingId);
+		assertEquals(productDto.getClass().getName(), ProductDTO.class.getName());
+	}
+	
+	@Test
+	void findByIdShouldByReturnElementNotFoundExceptionWhenIdNotExists() {
+		assertThrows(ElementNotFoundException.class, ()-> {
+			this.service.findById(nonExistingId);
+		});
 	}
 	
 	@Test
