@@ -34,8 +34,6 @@ import com.thiago.dscatalog.services.ProductService;
 import com.thiago.dscatalog.services.exception.DataBaseException;
 import com.thiago.dscatalog.services.exception.ElementNotFoundException;
 
-
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class ProductsResourceTest {
